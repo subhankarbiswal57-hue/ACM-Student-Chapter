@@ -1,40 +1,21 @@
 #include <iostream>
 #include <vector>
-#include <map>
-
+#include <unordered_map>
 using namespace std;
-
-// Optimized approach: Prefix sums with frequency hash map
-// Time Complexity: O(n log n) with std::map (or O(n) average with custom/gp_hash_table)
-// Space Complexity: O(n)
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
     int n;
     long long x;
-    if (!(cin >> n >> x)) return 0;
-
-    map<long long, int> prefix_counts;
-    // Prefix sum 0 exists by default (empty subarray before index 0)
-    prefix_counts[0] = 1;
-
-    long long current_prefix = 0;
-    long long count = 0;
-
-    for (int i = 0; i < n; ++i) {
-        long long val;
-        cin >> val;
-        current_prefix += val;
-
-        long long target = current_prefix - x;
-        if (prefix_counts.count(target)) {
-            count += prefix_counts[target];
-        }
-
-        prefix_counts[current_prefix]++;
+    cin >> n >> x;
+    unordered_map<long long, long long> freq;
+    freq[0] = 1;
+    long long sum = 0, count = 0;
+    for (int i = 0; i < n; i++) {
+        long long num;
+        cin >> num;
+        sum += num;
+        count += freq[sum - x];
+        freq[sum]++;
     }
-
-    cout << count << "\n";
+    cout << count << endl;
     return 0;
 }
